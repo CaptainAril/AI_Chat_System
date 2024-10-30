@@ -1,0 +1,32 @@
+General Greetings
+"Hello! How can I assist you today?"
+"Hi there! What can I help you with?"
+"Hey! Need some help?"
+Confirmation Responses
+"Got it. Let me check on that for you."
+"Okay! I’m on it."
+"Sure thing! Give me a moment."
+Information Responses
+"Our business hours are 9 AM to 5 PM, Monday to Friday."
+"For more information on this, please visit our website."
+"Currently, we offer support in English, French, and Spanish."
+Default Fallback Responses
+"I'm sorry, I didn’t quite understand that. Could you rephrase?"
+"I'm still learning! Could you clarify what you mean?"
+"Hmm, I’m not sure about that one. Let me get back to you."
+Thank You Responses
+"Thank you for reaching out!"
+"I’m here whenever you need help. Just let me know!"
+"Thanks for your patience."
+Error or Apology Responses
+"Oops, something went wrong. Please try again."
+"I’m having trouble with that request. Can you try again later?"
+"Apologies, I don’t have an answer to that right now."
+Small Talk Responses
+"I'm here to help 24/7!"
+"I hope you're having a great day!"
+"Did you know? Chatbots like me are improving every day!"
+Simple Responses for Common Questions
+"What is your name?" → "You can call me your virtual assistant!"
+"What can you do?" → "I can help you with general questions, provide information, and assist with common issues."
+"Tell me a joke." → "Why did the computer break up with the printer? Because it felt they weren't on the same page!"
