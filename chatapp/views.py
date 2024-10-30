@@ -29,14 +29,14 @@ class UserView(APIView):
                 'token':user.tokens
             }
             return Response({"status": "successs", "message":"User Account created", 'data':data}, status=status.HTTP_201_CREATED)
-        return Response({"status": "An Error occured", "Errors":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"status": "An Error occured", "errors":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
     
 
 class UserListView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     
     def get(self, request):
-        return Response(data={'message' : 'All Users retrieved', 'status': 200, 'data':UserSerializer(User.objects.all(), many=True).data})
+        return Response(data={'message' : 'All Users retrieved', 'status': 'success', 'data':UserSerializer(User.objects.all(), many=True).data})
 
 
 class LoginView(TokenObtainPairView):
@@ -60,6 +60,7 @@ class LoginView(TokenObtainPairView):
                 data = {
                     'status': '200',
                     'message': 'Login succesfull',
+                    'username': user.username,
                     'access': response.data.get('access'),
                     'refresh': response.data.get('refresh')
                     }
@@ -81,7 +82,7 @@ class LogoutView(APIView):
             try:
                 token = RefreshToken(refresh_token)
                 token.blacklist()
-                return Response(data={'status':'success', 'message': 'User logged out'}, status=status.HTTP_200_OK)
+                return Response(data={'status':'success', 'message': 'Logged out successfully'}, status=status.HTTP_200_OK)
             except (TokenError, InvalidToken):
                 return Response({"status": "error", "message": "Invalid or expired refresh token"}, status=status.HTTP_400_BAD_REQUEST)
         else:
@@ -98,12 +99,12 @@ class ChatView(APIView):
             'user_account': request.user.username,
             'chats': serializer.data
         }
-        return Response(data={'status': "success", 'message' : 'Chats retrieved', 'data':data})
+        return Response(data={'status': "success", 'message' : 'Chats retrieved', **data})
         
     
     def post(self, request):
         if request.user.tokens < 100:
-                return Response({'status': '401', 'message': 'You have run out of tokens'}, status=status.HTTP_402_PAYMENT_REQUIRED)
+                return Response({'status': 'error', 'message': 'Insufficient tokens'}, status=status.HTTP_402_PAYMENT_REQUIRED)
             
         data = request.data.copy()
         data['user'] = request.user
@@ -112,15 +113,15 @@ class ChatView(APIView):
         if serializer.is_valid():
             serializer.save()
 
-            request.user.tokens -= 100
+            request.user.tokens -= 4000
             request.user.save()
             
             data = {
             'user_account': request.user.username,
-            'chats': serializer.data
+            'chat': serializer.data
         }
             
-            return Response(data={'status': 'success', 'message' : 'New Chats record', 'data':data}, status=status.HTTP_201_CREATED)
+            return Response(data={'status': 'success', 'message' : 'New chat record', **data}, status=status.HTTP_201_CREATED)
 
         return Response({"status": "error", "errors":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
     
@@ -132,7 +133,7 @@ class TokenBalanceView(APIView):
         if request.user.is_authenticated:
             data = {
                 'username': request.user.username,
-                'tokens_balance': request.user.tokens
+                'token_balance': request.user.tokens
             }
-            return Response({'status':'success', 'message': 'Token balance', 'data': data}, status=status.HTTP_200_OK)
+            return Response({'status':'success', 'message': 'Token balance', **data}, status=status.HTTP_200_OK)
         return Response({'status':'error', 'message': 'Login Required!'}, status=status.HTTP_401_UNAUTHORIZED)
