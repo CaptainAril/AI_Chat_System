@@ -47,8 +47,6 @@ class LoginView(TokenObtainPairView):
         
         serializer = UserLoginSerializer(data=request.data)
         if serializer.is_valid():
-            print(request.data)
-            print(serializer.data)
             username = serializer.data.get('username')
             password = serializer.data.get('password')
             
@@ -77,7 +75,6 @@ class LogoutView(APIView):
     
     def post(self, request):
         refresh_token = request.data.get('refresh')
-        print(refresh_token)
         if refresh_token:
             try:
                 token = RefreshToken(refresh_token)
@@ -113,7 +110,7 @@ class ChatView(APIView):
         if serializer.is_valid():
             serializer.save()
 
-            request.user.tokens -= 4000
+            request.user.tokens -= 100
             request.user.save()
             
             data = {

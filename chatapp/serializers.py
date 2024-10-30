@@ -42,10 +42,4 @@ class ChatSerializer(serializers.ModelSerializer):
         
     def create(self, validated_data):
         validated_data['response'] = chat_response(validated_data['message'])
-        print('Creating chat!!!!')
-        print(validated_data)
         return super().create(validated_data)
-    
-    # def create(self, validated_data):
-    #     return super().create(validated_data)
-    
